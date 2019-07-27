@@ -1,0 +1,69 @@
+<h1>Search</h1>
+
+<input type="text" id="quick-search">
+<button id="search" class="search-btn">search</button>
+<span class="total"></span>
+<div class="main-search-results"></div>
+
+
+<script type="text/javascript">
+
+    require(['jquery', 'jquery/ui'], function($) {
+        jQuery(document).ready(function () {
+            $('.search-btn').on('click',function () {
+                var search_text = jQuery("#quick-search").val();
+                if(search_text.length > 0) {
+                    try {
+                        jQuery.ajax({
+                            url: '<?= $this->getUrl() . 'ajax/index/product' ?>',
+                            dataType: 'json',
+                            data: {
+                                name: search_text
+                            },
+                            type: 'post',
+                            beforeSend: function () {
+                                console.log('sedning');
+                                jQuery('.main-search-results').html('<p>searching...</p>')
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                if(data.count){
+                                    jQuery('.total').empty().append('Total: '+data.count);
+                                }
+                                jQuery('.main-search-results').empty();
+                                if (data.result.length > 0) {
+
+
+                                    data.result.forEach(d => {
+
+                                        jQuery('.main-search-results').prepend(
+                                            '<div>' +
+                                            '<a href="'+d.url+'">' +
+                                            '<img src="'+d.image+'"  width="100" />' +
+                                            '<span>'+d.name + '</span></a>' +
+                                            '</div>'
+                                        );
+                                    })
+                                }
+
+                            },
+                            error: function (xhr) { // if error occured
+                                console.log(xhr);
+                                jQuery('.main-search-results').empty();
+
+                            },
+                            complete: function () {
+                                console.log('finished');
+                            },
+
+                        });
+                        return;
+                    } catch (e) {
+                    }
+                }
+
+            });
+        });
+    });
+
+</script>
