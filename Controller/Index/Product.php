@@ -15,7 +15,7 @@ class Product extends \Magento\Framework\App\Action\Action
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\Controller\Result\JsonFactory    $resultJsonFactory,
         \Magento\Catalog\Helper\Image $imageHelperFactory,
-        \Tbb\Form\Helper\Index $helper
+        \Tbb\Data\Helper\Index $helper
 
     ) {
         parent::__construct($context);
